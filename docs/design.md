@@ -694,6 +694,23 @@ can disable either pass for differential testing. Cost-based contraction
 planning and numerical primitive recognition require separate evidence
 before being enabled.
 
+### 17.3. Compact presence predicates
+
+Boolean normalization evaluates literal negation, double negation and
+Boolean CASE branches without evaluating numerical operands. A Boolean
+cast retains the Boolean result type when removing double negation or a
+CASE with TRUE/FALSE branches.
+
+For COUNT over a Cartesian domain, a row mask that depends only on kept
+dimensions is constant along every reduced dimension. If their product
+is positive and fits signed 64-bit COUNT, `COUNT > 0` equals that mask.
+An empty reduced dimension proves FALSE. The numerical count itself is
+unchanged: only its positive predicate can use the fact. Axis rename/take
+operations transform the fact with the count. A mask that depends on a
+reduced dimension, or a possible count overflow, retains the original
+predicate. No assumption about numerical finiteness or nullable data is
+introduced, and SQL filters and NULL masks remain part of the result.
+
 ## 18. References
 
 The full list of papers, systems and documentation is in supplement section 18.
