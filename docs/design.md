@@ -669,6 +669,31 @@ does not yet define a stable public array API or an unconditional planner
 rewrite. See [the optimization report](../OPTIMIZATION.md) for its scope,
 measurements and downstream integration.
 
+### 17.2. Compact expression optimization
+
+The optional compact Python executor shares pure tensor expressions within
+one host invocation, including the forward and differentiated plans of a
+program. Expression identity includes ordered operands, coordinate-axis
+identity, operator and scalar dtype/bit pattern. Numerical input buffers
+are not interned by value. A contraction retains its operand dependencies
+and reduction domain in its identity, rather than identifying a reduction
+by its output shape. Graph metadata has a bounded entry count, separate
+from the byte-bounded computed-value cache, and expires with the invocation.
+
+For a proven full Cartesian domain, integer COUNT is the product of the
+reduced axis extents. A statically false mask gives zero. This rule applies
+only while the result fits signed 64-bit SQL COUNT; value-dependent masks
+remain computations. Empty input retains zero COUNT and NULL SUM/AVG, and
+group existence remains separate from column validity. This proof can
+eliminate structural count checks without assuming that numerical values
+or their gradients are finite.
+
+These passes do not reorder floating-point operands or reductions, remove
+dynamic NULL/dropout masks, or change the host's precision policy. A host
+can disable either pass for differential testing. Cost-based contraction
+planning and numerical primitive recognition require separate evidence
+before being enabled.
+
 ## 18. References
 
 The full list of papers, systems and documentation is in supplement section 18.
