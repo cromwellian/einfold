@@ -13,6 +13,10 @@ a SQL interface to labeled arrays, while retaining ordinary
 GPU arithmetic downstream. EinFold does not substitute a handwritten model
 or use MLX automatic differentiation.
 
+The subsequent [compact graph optimization report](COMPACT_GRAPH_OPTIMIZATION.md)
+describes invocation-local expression sharing, optional count proofs,
+matched training measurements and their startup/memory tradeoffs.
+
 ## Session-local dense kernel callback
 
 The Rust `DenseBackend` trait offers batched matmul and fused attention
