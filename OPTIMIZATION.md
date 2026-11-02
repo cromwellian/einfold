@@ -16,6 +16,8 @@ or use MLX automatic differentiation.
 The subsequent [compact graph optimization report](COMPACT_GRAPH_OPTIMIZATION.md)
 describes invocation-local expression sharing, optional count proofs,
 matched training measurements and their startup/memory tradeoffs.
+The [predicate report](PREDICATE_OPTIMIZATION.md) follows with typed Boolean
+normalization and optional proofs of count-positive predicates.
 
 ## Session-local dense kernel callback
 
