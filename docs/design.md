@@ -734,6 +734,21 @@ Inspecting it is not permission to assume dynamic masks are constant or to
 replace the derivative program. Primitive-specific eligibility proofs,
 precision bounds and measurements belong to each host's specialization.
 
+### 17.5. Exact group-domain proofs
+
+A dependent integer group key with a validated finite domain cannot miss
+that same domain during indexing. The compact GPU grouping path uses the
+same domain-subset proof as an indexed join, retaining numerical scatter
+and accumulation while avoiding a redundant device-dependent found mask.
+
+For grouped UNION ALL, a valid, present branch with independent key axes
+and exactly the complete ordered output domains proves that every output
+group is present. For a numerical column it also proves some contribution
+is non-NULL; other branches may still add duplicate or nullable values.
+No branch values are removed and no numerical sum is simplified. Partial,
+reordered, correlated or nullable layouts retain the original flag computation.
+`EINFOLD_DENSE_GROUP_PROOFS=0` disables these proofs for differential tests.
+
 ## 18. References
 
 The full list of papers, systems and documentation is in supplement section 18.
