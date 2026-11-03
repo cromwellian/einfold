@@ -711,6 +711,29 @@ reduced dimension, or a possible count overflow, retains the original
 predicate. No assumption about numerical finiteness or nullable data is
 introduced, and SQL filters and NULL masks remain part of the result.
 
+### 17.4. Compact reduction provenance
+
+The compact executor retains backend-neutral metadata for SUM/COUNT/AVG
+contractions and MIN/MAX: the original value expression, the combined row
+presence/column-validity mask, the complete joined row axes and SQL group
+axes. Sum metadata also records factored operands and repeated constant
+dimensions. Extremum dependencies remain part of the expression graph.
+Axis renames are explicit views; metadata belongs to the original producer
+and must be interpreted through each view's coordinate mapping. A reduction's
+bound axes are local: renaming its result must not capture its inner axes.
+Grouped UNION ALL metadata retains each ordered partial value, presence/
+validity mask and source coordinate axes. Boolean group-presence metadata
+retains its contributing masks and layouts separately from numeric sums.
+
+A numerical host may inspect this metadata before evaluating a reduction,
+return an equivalent array, or decline the specialization by returning no
+array. Existing aggregate code is the fallback, and hosts without the hook
+retain it. SQL output columns, group existence and NULL flags are unchanged.
+Metadata is structural and contains no numerical-value cache or GPU object.
+Inspecting it is not permission to assume dynamic masks are constant or to
+replace the derivative program. Primitive-specific eligibility proofs,
+precision bounds and measurements belong to each host's specialization.
+
 ## 18. References
 
 The full list of papers, systems and documentation is in supplement section 18.
