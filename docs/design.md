@@ -767,3 +767,13 @@ They retain the join's row/NULL masks and the group counts. Repeated,
 missing, reordered and dynamic positions use the original algorithms
 unless the positional proof holds. Hosts can opt into the experimental
 pass with `EINFOLD_DENSE_LAYOUT=1` for differential testing.
+
+### 17.7. Indexed grouped partials
+
+A grouped scatter retains the reduced values before the scatter, its
+lookup key and the local axis order. This lets a numerical host coalesce
+duplicate keys in a compact buffer and consume the partial in a later
+ordered UNION sum. These fields describe dependencies. Row presence and
+column validity still come from the existing SQL predicates. The host
+proves compatible coordinate domains and preserves each branch's
+aggregation and its place in the UNION order.
