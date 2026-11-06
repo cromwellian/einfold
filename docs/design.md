@@ -752,3 +752,18 @@ reordered, correlated or nullable layouts retain the original flag computation.
 ## 18. References
 
 The full list of papers, systems and documentation is in supplement section 18.
+
+### 17.6. Coordinate reshapes
+
+A static lookup that enumerates every source position in row-major order
+can split one axis into several axes by reshaping. If the lookup also
+depends on an axis already in the input, its positions must be constant
+along that axis. The result is aligned to the original gather's axis
+order. The inverse grouping can flatten a static one-to-one key map
+when its key axes are independent of the other grouping axes.
+
+These proofs use positional indices, so labels can be nonconsecutive.
+They retain the join's row/NULL masks and the group counts. Repeated,
+missing, reordered and dynamic positions use the original algorithms
+unless the positional proof holds. Hosts can opt into the experimental
+pass with `EINFOLD_DENSE_LAYOUT=1` for differential testing.
