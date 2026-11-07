@@ -802,3 +802,18 @@ contributions still apply.
 The identities and their byte-bounded map cache expire with the compact
 invocation. The ordinary computed-value cache accounts for gather
 results. `EINFOLD_DENSE_INDEX_MAPS=1` enables the experimental pass.
+
+### 17.9. Reduction value identity
+
+A reduction may share an earlier value when ordered operand identities,
+positional axes, the complete row and group domains, repeated extents,
+and masks agree. Its own SQL metadata remains attached to its consumer.
+The experimental pass selects reductions whose estimated work exceeds
+one million scalar operations and is at least 64 times the output size.
+The estimates use the operand dimension extents, and the ordinary
+computed-value cache controls retained numerical storage.
+
+The pass bounds its identity table independently and expires it with
+the invocation. It preserves the original factor and reduction order.
+A host may already eliminate these shared expressions after lowering.
+`EINFOLD_DENSE_REDUCTION_VALUES=1` enables the experiment for comparison.
