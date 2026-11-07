@@ -817,3 +817,14 @@ The pass bounds its identity table independently and expires it with
 the invocation. It preserves the original factor and reduction order.
 A host may already eliminate these shared expressions after lowering.
 `EINFOLD_DENSE_REDUCTION_VALUES=1` enables the experiment for comparison.
+
+### 17.10. Symbolic group validity
+
+`EINFOLD_DENSE_SYMBOLIC_MASKS=1` proves group existence and aggregate
+validity directly when a mask depends only on kept dimensions. A nonempty
+reduced Cartesian domain preserves that mask; an empty one gives false.
+The pass uses axis metadata without evaluating mask arrays or creating a
+COUNT expression for the proof. Full-domain counts also use the existing
+bounded constant-count rule. Masks involving reduced dimensions and
+possible signed count overflow retain the original calculation. Numerical
+SUM, AVG and derivative expressions remain unchanged.
