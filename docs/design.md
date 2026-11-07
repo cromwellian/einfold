@@ -828,3 +828,13 @@ COUNT expression for the proof. Full-domain counts also use the existing
 bounded constant-count rule. Masks involving reduced dimensions and
 possible signed count overflow retain the original calculation. Numerical
 SUM, AVG and derivative expressions remain unchanged.
+
+### 17.11. Separable group validity
+
+`EINFOLD_DENSE_FACTOR_MASKS=1` splits a conjunction into components whose
+reduced axes do not overlap. Components may share kept group axes. On a
+nonempty Cartesian domain, a contributing row exists exactly when every
+component has a contributing row on its own reduced axes. Masks over kept
+axes alone are retained directly. Empty domains and possible count overflow
+retain the existing guards. Numerical aggregate values and counts do not
+change; only their group/NULL existence predicates are factored.
