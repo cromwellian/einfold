@@ -838,3 +838,23 @@ component has a contributing row on its own reduced axes. Masks over kept
 axes alone are retained directly. Empty domains and possible count overflow
 retain the existing guards. Numerical aggregate values and counts do not
 change; only their group/NULL existence predicates are factored.
+
+### 17.12. Invocation-wide numerical value identities
+
+`EINFOLD_DENSE_VALUE_IDENTITIES=1` associates pure positional results with
+a canonical producer across prepared forward and backward statements.
+Pointwise keys include the ordered operands and their dimension roles.
+Reduction keys include complete row/group domains and masks. Extrema keep
+their operation and domains; indexed sums require a retained, proven lookup
+offset object, matching layouts and count bounds. Complete-domain ordered
+UNION results include every branch and its mask in original order.
+
+Logical axes, labels, row presence, column validity and reduction provenance
+stay on each consumer. Only a numerical buffer is reused. Lookup identities
+use the existing coordinate-map proof when `EINFOLD_DENSE_INDEX_MAPS=1` is
+enabled. Source values and operation/branch order are unchanged. Numerical
+storage remains in the byte-bounded computed-value cache and may recompute
+after eviction; bounded identity tables expire with the invocation.
+
+`EINFOLD_DENSE_SHARE_EXTREMA=0` and `EINFOLD_DENSE_SHARE_INDEXED=0` independently
+disable those two identity families for ablation while retaining the rest.
