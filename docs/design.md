@@ -783,3 +783,22 @@ ordered UNION sum. These fields describe dependencies. Row presence and
 column validity still come from the existing SQL predicates. The host
 proves compatible coordinate domains and preserves each branch's
 aggregation and its place in the UNION order.
+
+### 17.8. Coordinate map identity
+
+One compact invocation can span prepared primal and adjoint statements.
+An exact coordinate lookup can reuse its offsets and match mask when the
+key comes from the same tensor, its positional shape and domain proof
+agree, and the destination has the same ordered labels and dtype.
+Dimension aliases preserve the numerical identity of a tensor.
+
+Gathers of the same numerical source can share their value when they
+use that map and the same positional axis layout. Each consumer keeps
+its own SQL axes and validity metadata. A lookup of a coordinate
+already gathered from the same ordered domain can reuse the original
+offsets. Existing row masks and the order and multiplicity of adjoint
+contributions still apply.
+
+The identities and their byte-bounded map cache expire with the compact
+invocation. The ordinary computed-value cache accounts for gather
+results. `EINFOLD_DENSE_INDEX_MAPS=1` enables the experimental pass.
